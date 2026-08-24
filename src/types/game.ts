@@ -1,5 +1,5 @@
 export type QuestionType = 'mcq' | 'output' | 'debugging';
-export type QuestionTopic = 'Arrays' | 'Strings' | 'Stacks/Queues' | 'Recursion' | 'Time Complexity' | 'Basic Trees';
+export type QuestionTopic = 'Arrays' | 'Strings' | 'Stacks/Queues' | 'Recursion' | 'Time Complexity' | 'Basic Trees' | 'Trees & Graphs' | 'DP & Greedy';
 export type DifficultyTier = 'easy' | 'medium' | 'hard';
 
 export interface Question {
@@ -39,6 +39,8 @@ export interface TeamSession {
   hintsUsed: string[]; // List of question IDs where hint was revealed
   isCompleted: boolean;
   lastActiveAt: string;
+  tabSwitchCount: number; // Anti-cheat: tracks tab switch violations (0, 1, 2)
+  isDisqualified: boolean; // Anti-cheat: true if auto-submitted due to 2nd tab switch
 }
 
 export interface DoombotTarget {

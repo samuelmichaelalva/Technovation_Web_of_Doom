@@ -28,6 +28,8 @@ export async function initializeTeamSession(teamId: string, teamName: string): P
     hintsUsed: [],
     isCompleted: false,
     lastActiveAt: now,
+    tabSwitchCount: 0,
+    isDisqualified: false,
   };
 
   if (!isSupabaseConfigured || !supabase) {
@@ -84,6 +86,8 @@ export async function initializeTeamSession(teamId: string, teamName: string): P
         hintsUsed: activeSession.hints_used || [],
         isCompleted: activeSession.is_completed || false,
         lastActiveAt: now,
+        tabSwitchCount: activeSession.tab_switch_count || 0,
+        isDisqualified: activeSession.is_disqualified || false,
       };
 
       // Update active device token & heart-beat
@@ -196,6 +200,8 @@ export async function fetchAdminSessions(): Promise<{ session: TeamSession; team
         hintsUsed: item.hints_used || [],
         isCompleted: item.is_completed,
         lastActiveAt: item.last_active_at,
+        tabSwitchCount: item.tab_switch_count || 0,
+        isDisqualified: item.is_disqualified || false,
       },
       teamName: item.teams?.team_name || item.team_id,
     }));

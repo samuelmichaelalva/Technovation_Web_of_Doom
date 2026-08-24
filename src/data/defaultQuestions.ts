@@ -326,5 +326,270 @@ console.log(queue.join("->"));`,
     explanation: 'Tree depth is determined by the longest path from root to leaf, requiring `Math.max(left, right) + 1`. Summing left + right counts total node path lengths.',
     hint: 'Does depth mean adding both branches together or picking the deeper branch?',
     points: 300
+  },
+
+  // ──── ADDITIONAL ARRAYS ────
+  {
+    id: 'arr-04',
+    topic: 'Arrays',
+    type: 'mcq',
+    difficulty: 'medium',
+    question: 'Which algorithmic technique efficiently finds a pair of elements in a sorted array that sum to a given target value?',
+    options: ['Two Pointer Technique', 'Bubble Sort', 'DFS (Depth-First Search)', 'Dijkstra\'s Algorithm'],
+    correctAnswer: 'Two Pointer Technique',
+    explanation: 'With one pointer at the start and one at the end, we can adjust them inward based on whether the current sum is too large or too small, achieving O(n) time.',
+    hint: 'Think about placing one pointer at each end of the sorted array and moving them toward each other.',
+    points: 200
+  },
+  {
+    id: 'arr-05',
+    topic: 'Arrays',
+    type: 'output',
+    difficulty: 'hard',
+    question: 'What is the output of this code?',
+    codeSnippet: `const arr = [3, 1, 4, 1, 5, 9];
+const result = arr.reduce((acc, val) => acc > val ? acc : val, -Infinity);
+console.log(result);`,
+    options: ['9', '3', '23', '-Infinity'],
+    correctAnswer: '9',
+    explanation: 'The reduce function iterates through the array, keeping the maximum value seen so far. Starting from -Infinity, it finds 9 as the largest element.',
+    hint: 'reduce() here acts as a manual Math.max() by comparing the accumulator to each value.',
+    points: 300
+  },
+
+  // ──── ADDITIONAL STRINGS ────
+  {
+    id: 'str-04',
+    topic: 'Strings',
+    type: 'mcq',
+    difficulty: 'medium',
+    question: 'What is the time complexity of checking whether a string is a palindrome by comparing characters from both ends?',
+    options: ['O(n)', 'O(n^2)', 'O(log n)', 'O(1)'],
+    correctAnswer: 'O(n)',
+    explanation: 'Each character is visited at most once using two pointers (one from start, one from end), making it a single linear pass O(n).',
+    hint: 'How many characters does each pointer need to visit before they meet in the middle?',
+    points: 200
+  },
+
+  // ──── ADDITIONAL STACKS/QUEUES ────
+  {
+    id: 'sq-04',
+    topic: 'Stacks/Queues',
+    type: 'output',
+    difficulty: 'medium',
+    question: 'What does this stack-based expression evaluator output?',
+    codeSnippet: `const stack = [];
+const tokens = "3 4 + 2 *".split(" ");
+for (const t of tokens) {
+  if ("+-*".includes(t)) {
+    const b = stack.pop(), a = stack.pop();
+    if (t === "+") stack.push(a + b);
+    else if (t === "*") stack.push(a * b);
+  } else { stack.push(Number(t)); }
+}
+console.log(stack[0]);`,
+    options: ['14', '10', '9', '24'],
+    correctAnswer: '14',
+    explanation: 'This is Reverse Polish Notation. Push 3, push 4. Pop 3+4=7, push 7. Push 2. Pop 7*2=14, push 14. Result: 14.',
+    hint: 'This is RPN (postfix notation). Operators apply to the two most recent numbers on the stack.',
+    points: 200
+  },
+
+  // ──── ADDITIONAL RECURSION ────
+  {
+    id: 'rec-04',
+    topic: 'Recursion',
+    type: 'output',
+    difficulty: 'hard',
+    question: 'What does countdown(5) print?',
+    codeSnippet: `function countdown(n) {
+  if (n <= 0) { console.log("GO!"); return; }
+  console.log(n);
+  countdown(n - 2);
+}
+countdown(5);`,
+    options: ['5, 3, 1, GO!', '5, 4, 3, 2, 1, GO!', '5, 3, GO!', '5, 3, 1'],
+    correctAnswer: '5, 3, 1, GO!',
+    explanation: 'countdown(5) prints 5, calls countdown(3) which prints 3, calls countdown(1) which prints 1, calls countdown(-1) which prints "GO!" and returns.',
+    hint: 'Trace each call: n decreases by 2 each time until n <= 0.',
+    points: 300
+  },
+
+  // ──── ADDITIONAL TIME COMPLEXITY ────
+  {
+    id: 'tc-04',
+    topic: 'Time Complexity',
+    type: 'mcq',
+    difficulty: 'hard',
+    question: 'What is the time complexity of Merge Sort in the worst case?',
+    options: ['O(n log n)', 'O(n^2)', 'O(n)', 'O(log n)'],
+    correctAnswer: 'O(n log n)',
+    explanation: 'Merge Sort divides the array in half each time (log n levels), and merges n elements at each level, giving O(n log n) in all cases.',
+    hint: 'How many levels of recursion are there, and how much work is done at each level?',
+    points: 300
+  },
+
+  // ──── TREES & GRAPHS (NEW CATEGORY) ────
+  {
+    id: 'tg-01',
+    topic: 'Trees & Graphs',
+    type: 'mcq',
+    difficulty: 'easy',
+    question: 'Which traversal algorithm uses a queue data structure to visit nodes level by level in a tree or graph?',
+    options: ['Breadth-First Search (BFS)', 'Depth-First Search (DFS)', 'Pre-Order Traversal', 'Post-Order Traversal'],
+    correctAnswer: 'Breadth-First Search (BFS)',
+    explanation: 'BFS uses a FIFO queue to explore all neighbors at the current depth before moving to the next level.',
+    hint: 'Which search strategy explores "wide" before "deep"?',
+    points: 100
+  },
+  {
+    id: 'tg-02',
+    topic: 'Trees & Graphs',
+    type: 'output',
+    difficulty: 'medium',
+    question: 'Given an adjacency list graph, what order does BFS visit nodes starting from node "A"?',
+    codeSnippet: `const graph = {
+  A: ["B", "C"],
+  B: ["D"],
+  C: ["E"],
+  D: [], E: []
+};
+// BFS from "A"`,
+    options: ['A, B, C, D, E', 'A, B, D, C, E', 'A, C, E, B, D', 'D, B, A, C, E'],
+    correctAnswer: 'A, B, C, D, E',
+    explanation: 'BFS visits A first, then its neighbors B and C (in order), then B\'s neighbor D, then C\'s neighbor E.',
+    hint: 'BFS processes all children of A before moving to grandchildren.',
+    points: 200
+  },
+  {
+    id: 'tg-03',
+    topic: 'Trees & Graphs',
+    type: 'debugging',
+    difficulty: 'hard',
+    question: 'Why does this DFS cycle detection fail on undirected graphs?',
+    codeSnippet: `function hasCycle(graph, node, visited) {
+  visited.add(node);
+  for (const neighbor of graph[node]) {
+    if (visited.has(neighbor)) return true;
+    if (hasCycle(graph, neighbor, visited)) return true;
+  }
+  return false;
+}`,
+    options: [
+      'It does not track the parent node, so it falsely detects the edge back to the parent as a cycle in undirected graphs.',
+      'The visited set should be an array, not a Set.',
+      'The recursive call should pass a copy of visited.',
+      'DFS cannot detect cycles in any graph.'
+    ],
+    correctAnswer: 'It does not track the parent node, so it falsely detects the edge back to the parent as a cycle in undirected graphs.',
+    explanation: 'In an undirected graph, every edge creates a back-reference. Without tracking which node we came from (parent), the algorithm mistakenly considers the parent as a cycle.',
+    hint: 'In undirected graphs, A→B and B→A are the same edge. How do you distinguish a real cycle from just going back?',
+    points: 300
+  },
+  {
+    id: 'tg-04',
+    topic: 'Trees & Graphs',
+    type: 'mcq',
+    difficulty: 'medium',
+    question: 'What is the maximum number of edges in a simple undirected graph with N vertices (no self-loops, no multi-edges)?',
+    options: ['N*(N-1)/2', 'N*N', 'N-1', '2*N'],
+    correctAnswer: 'N*(N-1)/2',
+    explanation: 'Each vertex can connect to N-1 others, but each edge is counted twice, giving N*(N-1)/2 unique edges.',
+    hint: 'Think of a complete graph where every vertex is connected to every other vertex.',
+    points: 200
+  },
+  {
+    id: 'tg-05',
+    topic: 'Trees & Graphs',
+    type: 'output',
+    difficulty: 'easy',
+    question: 'In a tree with 7 nodes, how many edges are there?',
+    codeSnippet: `// A tree is a connected acyclic graph.
+// Nodes: 7
+// Edges: ?`,
+    options: ['6', '7', '8', '14'],
+    correctAnswer: '6',
+    explanation: 'A tree with N nodes always has exactly N-1 edges. With 7 nodes, there are 6 edges.',
+    hint: 'The fundamental property of a tree: edges = nodes - 1.',
+    points: 100
+  },
+
+  // ──── DP & GREEDY (NEW CATEGORY) ────
+  {
+    id: 'dp-01',
+    topic: 'DP & Greedy',
+    type: 'mcq',
+    difficulty: 'easy',
+    question: 'What technique stores the results of expensive function calls and returns the cached result when the same inputs occur again?',
+    options: ['Memoization', 'Recursion', 'Binary Search', 'Hashing'],
+    correctAnswer: 'Memoization',
+    explanation: 'Memoization is a top-down dynamic programming approach that caches results of subproblems to avoid redundant computations.',
+    hint: 'It\'s like keeping a "memo" of previously computed answers.',
+    points: 100
+  },
+  {
+    id: 'dp-02',
+    topic: 'DP & Greedy',
+    type: 'output',
+    difficulty: 'medium',
+    question: 'What does this function return for climbStairs(4)?',
+    codeSnippet: `function climbStairs(n) {
+  if (n <= 2) return n;
+  let a = 1, b = 2;
+  for (let i = 3; i <= n; i++) {
+    [a, b] = [b, a + b];
+  }
+  return b;
+}`,
+    options: ['5', '4', '8', '3'],
+    correctAnswer: '5',
+    explanation: 'This is the Fibonacci climbing stairs problem. For n=4: ways = 1,2,3,5. You can climb 1 or 2 steps at a time, giving 5 distinct ways.',
+    hint: 'Trace the loop: i=3 → a=2,b=3; i=4 → a=3,b=5.',
+    points: 200
+  },
+  {
+    id: 'dp-03',
+    topic: 'DP & Greedy',
+    type: 'debugging',
+    difficulty: 'hard',
+    question: 'Why does this greedy coin change algorithm fail to find the minimum number of coins for amount=6 with coins=[1, 3, 4]?',
+    codeSnippet: `function minCoins(coins, amount) {
+  coins.sort((a, b) => b - a); // Sort descending
+  let count = 0;
+  for (const coin of coins) {
+    count += Math.floor(amount / coin);
+    amount %= coin;
+  }
+  return count;
+}
+// minCoins([1, 3, 4], 6) returns 3 (4+1+1)
+// but optimal is 2 (3+3)`,
+    options: [
+      'The greedy approach always picks the largest coin first, but this doesn\'t guarantee the global minimum. Dynamic Programming is needed for optimal coin change.',
+      'The sort function is incorrect and should sort ascending.',
+      'Math.floor causes rounding errors with large amounts.',
+      'The modulo operator % does not work with coin values.'
+    ],
+    correctAnswer: 'The greedy approach always picks the largest coin first, but this doesn\'t guarantee the global minimum. Dynamic Programming is needed for optimal coin change.',
+    explanation: 'Greedy picks coin 4 first (6/4=1, remainder 2), then coin 1 twice. Total: 3 coins. But using two 3-coins gives 2 coins. Greedy fails because locally optimal choices don\'t always lead to globally optimal solutions.',
+    hint: 'Does always picking the biggest coin guarantee the fewest total coins?',
+    points: 300
+  },
+  {
+    id: 'dp-04',
+    topic: 'DP & Greedy',
+    type: 'mcq',
+    difficulty: 'medium',
+    question: 'In the classic 0/1 Knapsack problem, what makes it different from the fractional (greedy) knapsack?',
+    options: [
+      'Items cannot be divided — you must take the whole item or leave it, requiring Dynamic Programming.',
+      'Items are sorted by weight before selection.',
+      'The knapsack has unlimited capacity.',
+      'Items have no weight, only value.'
+    ],
+    correctAnswer: 'Items cannot be divided — you must take the whole item or leave it, requiring Dynamic Programming.',
+    explanation: 'In 0/1 Knapsack, each item is either fully included or excluded. This discrete choice prevents the greedy fractional approach and requires DP to explore all subsets optimally.',
+    hint: 'Can you take half of an item in 0/1 Knapsack?',
+    points: 200
   }
 ];

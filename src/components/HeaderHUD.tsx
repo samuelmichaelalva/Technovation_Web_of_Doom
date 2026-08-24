@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Shield, Clock, Award, Lock, Volume2, VolumeX } from 'lucide-react';
+import { Shield, Clock, Award, Lock, Volume2, VolumeX, ShieldAlert } from 'lucide-react';
 import { soundEngine } from '../utils/soundEngine';
 
 interface HeaderHUDProps {
@@ -9,6 +9,7 @@ interface HeaderHUDProps {
   solvedCount: number;
   totalQuestions: number;
   onAdminClick: () => void;
+  tabSwitchCount?: number;
 }
 
 export const HeaderHUD: React.FC<HeaderHUDProps> = ({
@@ -18,6 +19,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
   solvedCount,
   totalQuestions,
   onAdminClick,
+  tabSwitchCount = 0,
 }) => {
   const [isMuted, setIsMuted] = React.useState(soundEngine.getMutedState());
   const minutes = Math.floor(remainingSeconds / 60);
@@ -74,6 +76,21 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
               <span className="font-bold">
                 {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
               </span>
+            </div>
+          </div>
+
+          {/* Anti-Cheat Shield Status */}
+          <div
+            className={`px-3 py-1.5 rounded-sm border flex items-center gap-2 font-mono text-xs ${
+              tabSwitchCount > 0
+                ? 'bg-red-950/80 border-red-500 text-red-400 animate-pulse'
+                : 'bg-[#181b25] border-[#00ff66]/40 text-[#00ff66]'
+            }`}
+          >
+            <ShieldAlert className={`w-4 h-4 ${tabSwitchCount > 0 ? 'text-red-400' : 'text-[#00ff66]'}`} />
+            <div>
+              <span className="text-[10px] uppercase text-slate-400 mr-1.5">SHIELD:</span>
+              <span className="font-bold">{tabSwitchCount}/2</span>
             </div>
           </div>
 

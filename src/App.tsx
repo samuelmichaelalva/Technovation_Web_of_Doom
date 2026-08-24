@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { DEFAULT_QUESTIONS } from './data/defaultQuestions';
 import type { Question, TeamSession, UserAnswerState } from './types/game';
 import { getLocalSession, getCustomQuestions } from './utils/storage';
@@ -11,8 +11,20 @@ import { QuestionNavigator } from './components/QuestionNavigator';
 import { HintModal } from './components/HintModal';
 import { MissionCompleteScreen } from './components/MissionCompleteScreen';
 import { AdminDashboard } from './components/admin/AdminDashboard';
+import { TabViolationModal } from './components/TabViolationModal';
+import { SecurityLockoutScreen } from './components/SecurityLockoutScreen';
 import { soundEngine } from './utils/soundEngine';
 import './styles/hud.css';
+
+/** Fisher-Yates shuffle — returns a new shuffled copy */
+function shuffleArray<T>(arr: T[]): T[] {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
 export function App() {
   const [questions, setQuestions] = useState<Question[]>(() => {
@@ -26,9 +38,13 @@ export function App() {
   const [remainingSeconds, setRemainingSeconds] = useState(1800); // 30 mins = 1800s
   const [showAdmin, setShowAdmin] = useState(false);
 
+  // Anti-cheat state
+  const [showTabViolationModal, setShowTabViolationModal] = useState(false);
+  const tabSwitchHandledRef = useRef(false); // Prevents duplicate events firing
+
   // Synchronize 30-minute timer based on session start_time
   useEffect(() => {
-    if (!session || session.isCompleted) return;
+    if (!session || session.isCompleted || session.isDisqualified) return;
 
     const calculateTime = () => {
       const startTime = new Date(session.startTime).getTime();
@@ -36,6 +52,11 @@ export function App() {
       const totalSessionMs = 30 * 60 * 1000; // 30 minutes
       const rem = Math.max(0, Math.floor((totalSessionMs - elapsedMs) / 1000));
       setRemainingSeconds(rem);
+
+      // Audio alerts at critical time thresholds
+      if (rem === 300 || rem === 60 || rem === 10) {
+        soundEngine.playAlarm();
+      }
 
       if (rem === 0 && !session.isCompleted) {
         // Auto-complete session on timer expiration
@@ -49,6 +70,79 @@ export function App() {
     const interval = setInterval(calculateTime, 1000);
     return () => clearInterval(interval);
   }, [session]);
+
+  // ─── ANTI-CHEAT: Tab Switch Detection ───
+  const handleTabSwitch = useCallback(() => {
+    if (!session || session.isCompleted || session.isDisqualified) return;
+    if (tabSwitchHandledRef.current) return; // debounce
+    tabSwitchHandledRef.current = true;
+    setTimeout(() => { tabSwitchHandledRef.current = false; }, 1000);
+
+    const currentCount = session.tabSwitchCount || 0;
+    const newCount = currentCount + 1;
+
+    if (newCount === 1) {
+      // ─── 1ST VIOLATION: Shuffle questions + show warning modal ───
+      const shuffled = shuffleArray(questions);
+      setQuestions(shuffled);
+      setCurrentIdx(0); // Reset to first question of shuffled order
+
+      const updated: TeamSession = {
+        ...session,
+        tabSwitchCount: newCount,
+        currentQuestionIdx: 0,
+      };
+      setSession(updated);
+      syncSessionState(updated);
+      setShowTabViolationModal(true);
+
+    } else if (newCount >= 2) {
+      // ─── 2ND VIOLATION: Auto-submit & permanent lockout ───
+      const updated: TeamSession = {
+        ...session,
+        tabSwitchCount: newCount,
+        isCompleted: true,
+        isDisqualified: true,
+      };
+      setSession(updated);
+      syncSessionState(updated);
+    }
+  }, [session, questions]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.shiftKey && (e.key === 'R' || e.key === 'r')) {
+        // Testing shortcut: Clear local session & restart login
+        localStorage.removeItem('technovation_team_session');
+        setSession(null);
+        setCurrentIdx(0);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (!session || session.isCompleted || session.isDisqualified) return;
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        handleTabSwitch();
+      }
+    };
+
+    const onBlur = () => {
+      handleTabSwitch();
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('blur', onBlur);
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('blur', onBlur);
+    };
+  }, [handleTabSwitch, session]);
 
   const handleSessionStarted = (newSession: TeamSession) => {
     setSession(newSession);
@@ -131,6 +225,20 @@ export function App() {
     return <TeamLoginModal onSessionStarted={handleSessionStarted} />;
   }
 
+  // ─── SECURITY LOCKOUT: Show permanent disqualification screen ───
+  if (session.isDisqualified) {
+    const solvedCount = Object.keys(session.answers || {}).length;
+    return (
+      <SecurityLockoutScreen
+        teamName={session.teamName}
+        teamId={session.teamId}
+        finalScore={session.score}
+        solvedCount={solvedCount}
+        totalQuestions={questions.length}
+      />
+    );
+  }
+
   const currentQ = questions[currentIdx] || questions[0];
   const existingAnswer = session.answers[currentQ?.id];
   const solvedCount = Object.keys(session.answers || {}).length;
@@ -144,6 +252,7 @@ export function App() {
         solvedCount={solvedCount}
         totalQuestions={questions.length}
         onAdminClick={() => setShowAdmin(true)}
+        tabSwitchCount={session.tabSwitchCount || 0}
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
@@ -203,6 +312,12 @@ export function App() {
         onClose={() => setIsHintModalOpen(false)}
       />
 
+      {/* Anti-Cheat: Tab Violation Warning Modal */}
+      <TabViolationModal
+        isOpen={showTabViolationModal}
+        onDismiss={() => setShowTabViolationModal(false)}
+      />
+
       {/* Footer copyright bar */}
       <footer className="w-full py-3 border-t border-slate-800 bg-[#070b16] text-center text-[11px] text-slate-500 font-mono">
         WEB OF DOOM // DOCTOR DOOM TECHNOVATION ROUND 01 // VERCEL READY
@@ -212,3 +327,4 @@ export function App() {
 }
 
 export default App;
+
