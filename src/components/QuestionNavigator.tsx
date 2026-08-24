@@ -29,7 +29,8 @@ export const QuestionNavigator: React.FC<QuestionNavigatorProps> = ({
       </div>
 
       {/* Grid Buttons */}
-      <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-4 gap-2 mb-3">
+      <div className="max-h-[220px] overflow-y-auto pr-1 custom-scrollbar">
+        <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-4 gap-2 mb-1">
         {questions.map((q, idx) => {
           const answerState = answers[q.id];
           const isCurrent = idx === currentIdx;
@@ -56,6 +57,7 @@ export const QuestionNavigator: React.FC<QuestionNavigatorProps> = ({
             </button>
           );
         })}
+        </div>
       </div>
 
       <div className="text-center text-[10px] text-slate-600 uppercase font-mono tracking-widest pt-1 border-t border-slate-800/60">

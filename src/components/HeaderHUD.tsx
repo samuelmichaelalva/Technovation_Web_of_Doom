@@ -44,11 +44,11 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
   const doomGridControl = 100 - percentageSolved;
 
   return (
-    <header className="w-full bg-[#0a101e]/90 border-b border-[#00eefc]/30 px-4 lg:px-8 py-3 backdrop-blur-md sticky top-0 z-40 shadow-[0_4px_20px_rgba(0,0,0,0.8)] font-mono">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+    <header className="w-full bg-[#0a101e]/95 border-b border-[#00eefc]/30 px-3 md:px-6 py-2.5 backdrop-blur-md sticky top-0 z-40 shadow-[0_4px_20px_rgba(0,0,0,0.8)] font-mono">
+      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 md:gap-4">
         
-        {/* Title / Brand */}
-        <div className="flex items-center gap-3">
+        {/* Left: Brand Logo & Team Name */}
+        <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-full border border-[#00ff66] bg-[#0a0e17] shadow-[0_0_10px_rgba(0,255,102,0.5)] overflow-hidden flex items-center justify-center select-none flex-shrink-0">
             <img
               alt="Doctor Doom"
@@ -58,60 +58,52 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-lg md:text-xl font-black tracking-tighter text-[#00ff66] neon-text-green uppercase font-mono">
-                WEB OF DOOM
-              </h1>
-            </div>
-            <div className="text-[10px] text-[#00eefc] tracking-widest uppercase">
+            <h1 className="text-base md:text-xl font-black tracking-tighter text-[#00ff66] neon-text-green uppercase font-mono leading-none">
+              WEB OF DOOM
+            </h1>
+            <div className="text-[9px] md:text-[10px] text-[#00eefc] tracking-widest uppercase mt-0.5">
               ROUND 01 // DOOMBOT DEFENSE
             </div>
           </div>
         </div>
 
-        {/* Right HUD Stats */}
-        <div className="flex items-center gap-4 md:gap-6">
-          <div className="flex items-center gap-2 bg-[#181b25] px-3 py-1.5 rounded-sm border border-[#00eefc]/30 font-mono text-xs">
-            <Award className="w-4 h-4 text-[#00ff66]" />
-            <div>
-              <span className="text-[10px] uppercase text-slate-400 mr-1.5">SCORE:</span>
-              <span className="font-bold text-[#00ff66]">{score} PTS</span>
-            </div>
-          </div>
-
+        {/* Center/Right HUD Badges */}
+        <div className="flex items-center gap-1.5 md:gap-3 flex-wrap">
+          {/* Timer Badge */}
           <div
-            className={`px-3 py-1.5 rounded-sm border flex items-center gap-2 font-mono text-xs ${
+            className={`px-2 md:px-3 py-1 rounded-sm border flex items-center gap-1.5 font-mono text-xs ${
               isLowTime
                 ? 'bg-red-950/80 border-red-500 text-red-400 animate-pulse'
                 : 'bg-[#181b25] border-[#00eefc]/40 text-[#00eefc]'
             }`}
           >
-            <Clock className={`w-4 h-4 ${isLowTime ? 'animate-bounce text-red-400' : 'text-[#00eefc]'}`} />
-            <div>
-              <span className="text-[10px] uppercase text-slate-400 mr-1.5">REMAINING:</span>
-              <span className="font-bold">
+            <Clock className={`w-3.5 h-3.5 ${isLowTime ? 'animate-bounce text-red-400' : 'text-[#00eefc]'}`} />
+            <div className="flex items-center gap-1">
+              <span className="text-[9px] uppercase text-slate-400 hidden xs:inline">TIME:</span>
+              <span className="font-bold text-xs md:text-sm">
                 {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
               </span>
             </div>
           </div>
 
-          {/* Anti-Cheat Shield Status */}
+          {/* Anti-Cheat Shield Status Badge */}
           <div
-            className={`px-3 py-1.5 rounded-sm border flex items-center gap-2 font-mono text-xs ${
+            className={`px-2 md:px-3 py-1 rounded-sm border flex items-center gap-1.5 font-mono text-xs ${
               tabSwitchCount > 0
                 ? 'bg-red-950/80 border-red-500 text-red-400 animate-pulse'
                 : 'bg-[#181b25] border-[#00ff66]/40 text-[#00ff66]'
             }`}
           >
-            <ShieldAlert className={`w-4 h-4 ${tabSwitchCount > 0 ? 'text-red-400' : 'text-[#00ff66]'}`} />
-            <div>
-              <span className="text-[10px] uppercase text-slate-400 mr-1.5">SHIELD:</span>
-              <span className="font-bold">{tabSwitchCount}/5</span>
+            <ShieldAlert className={`w-3.5 h-3.5 ${tabSwitchCount > 0 ? 'text-red-400' : 'text-[#00ff66]'}`} />
+            <div className="flex items-center gap-1">
+              <span className="text-[9px] uppercase text-slate-400 hidden xs:inline">SHIELD:</span>
+              <span className="font-bold text-xs md:text-sm">{tabSwitchCount}/5</span>
             </div>
           </div>
 
-          <div className="flex flex-col w-40 px-3 py-1.5 rounded-sm border border-[#3b4b3a] bg-[#181b25] font-mono">
-            <div className="flex justify-between text-[10px] text-slate-400 mb-1">
+          {/* Doom Threat Gauge (hidden on mobile) */}
+          <div className="hidden lg:flex flex-col w-36 px-3 py-1 rounded-sm border border-[#3b4b3a] bg-[#181b25] font-mono">
+            <div className="flex justify-between text-[9px] text-slate-400 mb-0.5">
               <span>DOOM CONTROL</span>
               <span className={doomGridControl > 50 ? 'text-red-400 font-bold' : 'text-[#00ff66] font-bold'}>{doomGridControl}%</span>
             </div>
@@ -124,41 +116,42 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
               />
             </div>
           </div>
-        </div>
 
-        {/* Right Stats & Controls */}
-        <div className="flex items-center gap-3">
+          {/* Team Name Badge (desktop/tablet) */}
           {teamName && (
-            <div className="hidden sm:flex px-2.5 py-1.5 rounded-sm bg-[#181b25] border border-[#00ff66]/40 text-[#00ff66] font-mono text-xs items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#00ff66] animate-ping" />
-              <span className="font-bold">{teamName}</span>
+            <div className="hidden sm:flex px-2 py-1 rounded-sm bg-[#181b25] border border-[#00ff66]/40 text-[#00ff66] font-mono text-xs items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-ping" />
+              <span className="font-bold max-w-[100px] truncate">{teamName}</span>
             </div>
           )}
 
-          <div className="px-3 py-1.5 rounded-sm bg-[#181b25] border border-[#ffda70]/50 text-[#ffda70] font-mono text-xs flex items-center gap-2 shadow-[0_0_10px_rgba(255,218,112,0.2)]">
-            <Award className="w-4 h-4 text-[#ffda70]" />
-            <span className="font-bold text-sm">{score} PTS</span>
+          {/* Score Badge */}
+          <div className="px-2 md:px-3 py-1 rounded-sm bg-[#181b25] border border-[#ffda70]/50 text-[#ffda70] font-mono text-xs flex items-center gap-1.5 shadow-[0_0_10px_rgba(255,218,112,0.2)]">
+            <Award className="w-3.5 h-3.5 text-[#ffda70]" />
+            <span className="font-bold text-xs md:text-sm">{score} PTS</span>
           </div>
 
+          {/* Controls */}
           <button
             onClick={() => {
               soundEngine.playClick();
               onAdminClick();
             }}
-            className="p-2 rounded-sm border border-[#00eefc]/40 bg-[#181b25] text-slate-400 hover:text-[#00eefc] hover:border-[#00eefc] transition-colors"
+            className="p-1.5 rounded-sm border border-[#00eefc]/40 bg-[#181b25] text-slate-400 hover:text-[#00eefc] hover:border-[#00eefc] transition-colors"
             title="Admin Command Portal"
           >
-            <Lock className="w-4 h-4" />
+            <Lock className="w-3.5 h-3.5" />
           </button>
 
           <button
             onClick={handleAudioToggle}
-            className="p-2 rounded-sm border border-[#00eefc]/40 bg-[#181b25] text-[#00eefc] hover:border-[#00eefc] transition-colors"
+            className="p-1.5 rounded-sm border border-[#00eefc]/40 bg-[#181b25] text-[#00eefc] hover:border-[#00eefc] transition-colors"
             title={isMuted ? 'Unmute' : 'Mute'}
           >
-            {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-[#00eefc]" />}
+            {isMuted ? <VolumeX className="w-3.5 h-3.5 text-red-400" /> : <Volume2 className="w-3.5 h-3.5 text-[#00eefc]" />}
           </button>
         </div>
+
       </div>
     </header>
   );
