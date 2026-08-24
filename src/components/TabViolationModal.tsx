@@ -59,14 +59,14 @@ export const TabViolationModal: React.FC<TabViolationModalProps> = ({ isOpen, on
           </p>
           <p className="flex items-start gap-2">
             <Zap className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
-            <span>This is your <strong className="text-yellow-300">FIRST and FINAL WARNING</strong>. A second tab switch will <strong className="text-red-400">auto-submit your responses and terminate your session permanently</strong>.</span>
+            <span>You are allowed a maximum of <strong className="text-yellow-300">5 tab switches</strong>. Reaching 5 violations will <strong className="text-red-400">auto-submit your responses and lock you out permanently</strong>.</span>
           </p>
         </div>
 
         {/* Anti-Cheat Status */}
         <div className="p-3 bg-[#181b25] border border-red-500/30 text-xs text-red-300 mb-6 flex items-center justify-center gap-2">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-          <span>ANTI-CHEAT STATUS: <strong className="text-red-400">WARNING 1 / 2</strong></span>
+          <span>ANTI-CHEAT PROTOCOL: <strong className="text-red-400">RESHUFFLE & SIREN ENGAGED</strong></span>
         </div>
 
         {/* Dismiss Button */}

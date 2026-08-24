@@ -121,6 +121,39 @@ class SoundEngine {
     osc.start(now);
     osc.stop(now + 0.3);
   }
+
+  // Loud, repetitive 4-second Tab-Switch Security Siren SFX
+  public playTabSiren() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx) return;
+
+    const duration = 4.0; // Exactly 4 seconds
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+
+    // Oscillate frequency back and forth between 600Hz and 1400Hz every 0.25 seconds for 4 seconds
+    const sweeps = 16; // 4 seconds / 0.25s
+    for (let i = 0; i < sweeps; i++) {
+      const startTime = now + i * 0.25;
+      const targetFreq = i % 2 === 0 ? 1400 : 600;
+      osc.frequency.linearRampToValueAtTime(targetFreq, startTime + 0.25);
+    }
+
+    // Loud gain setting with smooth decay at the end of 4 seconds
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.setValueAtTime(0.35, now + duration - 0.3);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + duration);
+  }
 }
 
 export const soundEngine = new SoundEngine();

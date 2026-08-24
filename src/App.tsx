@@ -81,8 +81,11 @@ export function App() {
     const currentCount = session.tabSwitchCount || 0;
     const newCount = currentCount + 1;
 
-    if (newCount === 1) {
-      // ─── 1ST VIOLATION: Shuffle questions + show warning modal ───
+    // Play 4-second loud security siren SFX on any tab switch violation
+    soundEngine.playTabSiren();
+
+    if (newCount < 5) {
+      // ─── VIOLATIONS 1 to 4: Shuffle questions + show warning modal ───
       const shuffled = shuffleArray(questions);
       setQuestions(shuffled);
       setCurrentIdx(0); // Reset to first question of shuffled order
@@ -96,8 +99,8 @@ export function App() {
       syncSessionState(updated);
       setShowTabViolationModal(true);
 
-    } else if (newCount >= 2) {
-      // ─── 2ND VIOLATION: Auto-submit & permanent lockout ───
+    } else {
+      // ─── 5TH VIOLATION: Permanent Disqualification & Lockout ───
       const updated: TeamSession = {
         ...session,
         tabSwitchCount: newCount,
