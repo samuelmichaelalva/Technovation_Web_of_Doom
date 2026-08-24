@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AlertTriangle, ShieldAlert, Zap } from 'lucide-react';
+import { AlertTriangle, Zap } from 'lucide-react';
 import { soundEngine } from '../utils/soundEngine';
 
 interface TabViolationModalProps {
@@ -31,9 +31,13 @@ export const TabViolationModal: React.FC<TabViolationModalProps> = ({ isOpen, on
         <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-red-500" />
         <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-red-500" />
 
-        {/* Warning Icon */}
-        <div className="inline-flex p-4 rounded-full border-2 border-red-500 bg-red-950/50 text-red-400 mb-4 shadow-[0_0_30px_rgba(255,0,0,0.6)] animate-bounce">
-          <ShieldAlert className="w-12 h-12" />
+        <div className="relative w-20 h-20 max-w-[80px] max-h-[80px] mx-auto mb-4 rounded-full border-2 border-red-500 bg-red-950/50 shadow-[0_0_30px_rgba(255,0,0,0.6)] overflow-hidden flex items-center justify-center select-none animate-pulse">
+          <img
+            alt="Doctor Doom"
+            draggable={false}
+            className="w-full h-full object-cover opacity-90 mix-blend-lighten select-none pointer-events-none"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZUC6Umd71asYUmYyCSJa2zotKoUCTB-7cufQN23Z7AIb7bRQqj2b4mhaF2g_k86hfz-uNVNGjK0jID2gNMDyvGC6MjwEIBFEeb7hTBefjnl-gYfzC6sA8Ha940b-XSeHAgSj6lCuPUF7oKJgmkuugUEJWILJf1B0naQi6dl-NvAoEpfLNDm80zBbEpjh2vtoUVGCYO-XcA6p5cUoSkd8BGRJThaZZeWUkvrwAB2afgRKr0VWyqvpXu-ECDrkyJaA8dQ"
+          />
         </div>
 
         {/* Title */}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Play, AlertTriangle, Shield } from 'lucide-react';
+import { Volume2, VolumeX, Play, AlertTriangle } from 'lucide-react';
 import { initializeTeamSession } from '../utils/syncService';
 import type { TeamSession } from '../types/game';
 import { soundEngine } from '../utils/soundEngine';
@@ -70,16 +70,13 @@ export const TeamLoginModal: React.FC<TeamLoginModalProps> = ({ onSessionStarted
 
             {/* Doctor Doom Avatar Emblem (Fixed 96x96px container) */}
             <div className="mb-4 text-[#00ff66]">
-              <div className="relative w-24 h-24 max-w-[96px] max-h-[96px] mx-auto rounded-full border-2 border-[#00ff66] shadow-[0_0_15px_rgba(0,255,102,0.6)] overflow-hidden bg-[#0a0e17] flex items-center justify-center">
+              <div className="relative w-24 h-24 max-w-[96px] max-h-[96px] mx-auto rounded-full border-2 border-[#00ff66] shadow-[0_0_15px_rgba(0,255,102,0.6)] overflow-hidden bg-[#0a0e17] flex items-center justify-center select-none">
                 <img
                   alt="Doctor Doom"
-                  className="w-full h-full object-cover opacity-90 mix-blend-lighten max-w-full max-h-full"
+                  draggable={false}
+                  className="w-full h-full object-cover opacity-90 mix-blend-lighten max-w-full max-h-full select-none pointer-events-none"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZUC6Umd71asYUmYyCSJa2zotKoUCTB-7cufQN23Z7AIb7bRQqj2b4mhaF2g_k86hfz-uNVNGjK0jID2gNMDyvGC6MjwEIBFEeb7hTBefjnl-gYfzC6sA8Ha940b-XSeHAgSj6lCuPUF7oKJgmkuugUEJWILJf1B0naQi6dl-NvAoEpfLNDm80zBbEpjh2vtoUVGCYO-XcA6p5cUoSkd8BGRJThaZZeWUkvrwAB2afgRKr0VWyqvpXu-ECDrkyJaA8dQ"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
                 />
-                <Shield className="w-12 h-12 text-[#00ff66] absolute" />
               </div>
             </div>
 

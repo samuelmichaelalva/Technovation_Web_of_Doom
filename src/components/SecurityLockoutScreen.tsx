@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Skull, ShieldOff, XOctagon, Ban } from 'lucide-react';
+import { ShieldOff, XOctagon, Ban } from 'lucide-react';
 import { soundEngine } from '../utils/soundEngine';
 
 interface SecurityLockoutScreenProps {
@@ -42,9 +42,13 @@ export const SecurityLockoutScreen: React.FC<SecurityLockoutScreenProps> = ({
         <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-red-600" />
         <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-red-600" />
 
-        {/* Lockout Icon */}
-        <div className="inline-flex p-5 rounded-full border-2 border-red-600 bg-red-950/60 text-red-500 mb-5 shadow-[0_0_40px_rgba(255,0,0,0.6)]">
-          <Skull className="w-14 h-14" />
+        <div className="relative w-24 h-24 max-w-[96px] max-h-[96px] mx-auto mb-5 rounded-full border-2 border-red-600 bg-red-950/60 shadow-[0_0_40px_rgba(255,0,0,0.6)] overflow-hidden flex items-center justify-center select-none">
+          <img
+            alt="Doctor Doom"
+            draggable={false}
+            className="w-full h-full object-cover opacity-85 grayscale contrast-125 mix-blend-lighten select-none pointer-events-none"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZUC6Umd71asYUmYyCSJa2zotKoUCTB-7cufQN23Z7AIb7bRQqj2b4mhaF2g_k86hfz-uNVNGjK0jID2gNMDyvGC6MjwEIBFEeb7hTBefjnl-gYfzC6sA8Ha940b-XSeHAgSj6lCuPUF7oKJgmkuugUEJWILJf1B0naQi6dl-NvAoEpfLNDm80zBbEpjh2vtoUVGCYO-XcA6p5cUoSkd8BGRJThaZZeWUkvrwAB2afgRKr0VWyqvpXu-ECDrkyJaA8dQ"
+          />
         </div>
 
         {/* Title */}

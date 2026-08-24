@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ShieldCheck, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { soundEngine } from '../utils/soundEngine';
 
@@ -39,8 +39,13 @@ export const MissionCompleteScreen: React.FC<MissionCompleteScreenProps> = ({
         <div className="corner-bracket cb-bl" />
         <div className="corner-bracket cb-br" />
 
-        <div className="inline-flex p-4 rounded-full border-2 border-[#00ff66] bg-[#0a0e17] text-[#00ff66] mb-4 shadow-[0_0_20px_rgba(0,255,102,0.6)] animate-pulse">
-          <ShieldCheck className="w-12 h-12 text-[#00ff66]" />
+        <div className="relative w-24 h-24 max-w-[96px] max-h-[96px] mx-auto mb-4 rounded-full border-2 border-[#00ff66] bg-[#0a0e17] shadow-[0_0_20px_rgba(0,255,102,0.6)] overflow-hidden flex items-center justify-center select-none">
+          <img
+            alt="Doctor Doom"
+            draggable={false}
+            className="w-full h-full object-cover opacity-90 mix-blend-lighten select-none pointer-events-none"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZUC6Umd71asYUmYyCSJa2zotKoUCTB-7cufQN23Z7AIb7bRQqj2b4mhaF2g_k86hfz-uNVNGjK0jID2gNMDyvGC6MjwEIBFEeb7hTBefjnl-gYfzC6sA8Ha940b-XSeHAgSj6lCuPUF7oKJgmkuugUEJWILJf1B0naQi6dl-NvAoEpfLNDm80zBbEpjh2vtoUVGCYO-XcA6p5cUoSkd8BGRJThaZZeWUkvrwAB2afgRKr0VWyqvpXu-ECDrkyJaA8dQ"
+          />
         </div>
 
         <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-[#00ff66] neon-text-green uppercase font-mono mb-2">
