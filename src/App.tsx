@@ -156,14 +156,28 @@ export function App() {
       return '';
     };
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Intercept refresh keys (F5, Ctrl+R, Cmd+R) during active mission
+      if (
+        e.key === 'F5' ||
+        ((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R'))
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleTabSwitch();
+      }
+    };
+
     document.addEventListener('visibilitychange', onVisibilityChange);
     window.addEventListener('blur', onBlur);
     window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('keydown', handleKeyDown, true);
 
     return () => {
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('blur', onBlur);
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('keydown', handleKeyDown, true);
     };
   }, [handleTabSwitch, session, showAdmin]);
 
@@ -338,6 +352,7 @@ export function App() {
       {/* Anti-Cheat: Tab Violation Warning Modal */}
       <TabViolationModal
         isOpen={showTabViolationModal}
+        violationCount={session.tabSwitchCount || 1}
         onDismiss={() => setShowTabViolationModal(false)}
       />
 

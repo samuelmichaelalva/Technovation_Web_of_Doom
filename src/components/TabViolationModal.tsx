@@ -4,15 +4,15 @@ import { soundEngine } from '../utils/soundEngine';
 
 interface TabViolationModalProps {
   isOpen: boolean;
+  violationCount?: number;
   onDismiss: () => void;
 }
 
-export const TabViolationModal: React.FC<TabViolationModalProps> = ({ isOpen, onDismiss }) => {
+export const TabViolationModal: React.FC<TabViolationModalProps> = ({ isOpen, violationCount = 1, onDismiss }) => {
   useEffect(() => {
     if (isOpen) {
-      soundEngine.playAlarm();
-      // Play a second alarm slightly delayed for dramatic effect
-      const t = setTimeout(() => soundEngine.playAlarm(), 300);
+      soundEngine.playTabSiren();
+      const t = setTimeout(() => soundEngine.playAlarm(), 500);
       return () => clearTimeout(t);
     }
   }, [isOpen]);
@@ -47,7 +47,7 @@ export const TabViolationModal: React.FC<TabViolationModalProps> = ({ isOpen, on
 
         <div className="flex items-center justify-center gap-2 text-xs text-red-300 mb-6 tracking-widest">
           <AlertTriangle className="w-3.5 h-3.5" />
-          <span>UNSANCTIONED TAB SWITCH RECORDED</span>
+          <span>UNSANCTIONED REFRESH / TAB SWITCH RECORDED ({violationCount}/5)</span>
           <AlertTriangle className="w-3.5 h-3.5" />
         </div>
 
@@ -59,14 +59,14 @@ export const TabViolationModal: React.FC<TabViolationModalProps> = ({ isOpen, on
           </p>
           <p className="flex items-start gap-2">
             <Zap className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
-            <span>You are allowed a maximum of <strong className="text-yellow-300">5 tab switches</strong>. Reaching 5 violations will <strong className="text-red-400">auto-submit your responses and lock you out permanently</strong>.</span>
+            <span>Refreshing or switching tabs counts as a violation. Current status: <strong className="text-yellow-300">Violation {violationCount} of 5</strong>. Reaching 5 violations will <strong className="text-red-400">auto-submit your responses and lock you out permanently</strong>.</span>
           </p>
         </div>
 
         {/* Anti-Cheat Status */}
         <div className="p-3 bg-[#181b25] border border-red-500/30 text-xs text-red-300 mb-6 flex items-center justify-center gap-2">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-          <span>ANTI-CHEAT PROTOCOL: <strong className="text-red-400">RESHUFFLE & SIREN ENGAGED</strong></span>
+          <span>ANTI-CHEAT PROTOCOL: <strong className="text-red-400">SIREN & RESHUFFLE ENGAGED ({violationCount}/5)</strong></span>
         </div>
 
         {/* Dismiss Button */}
