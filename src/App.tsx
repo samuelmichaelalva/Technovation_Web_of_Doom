@@ -149,12 +149,21 @@ export function App() {
       handleTabSwitch();
     };
 
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      soundEngine.playTabSiren();
+      e.preventDefault();
+      e.returnValue = 'WARNING: Refreshing or leaving the page is strictly prohibited and counts as a security violation!';
+      return e.returnValue;
+    };
+
     document.addEventListener('visibilitychange', onVisibilityChange);
     window.addEventListener('blur', onBlur);
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('blur', onBlur);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [handleTabSwitch, session, showAdmin]);
 
