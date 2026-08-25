@@ -64,7 +64,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               {question.topic}
             </span>
             <span className="px-3 py-1 bg-[#181b25] border border-[#ffda70]/60 text-[#ffda70] text-xs font-bold uppercase">
-              {question.difficulty} // +{question.points} PTS
+              {question.difficulty} - +{question.points} PTS
             </span>
           </div>
 
