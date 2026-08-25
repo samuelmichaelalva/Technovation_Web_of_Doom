@@ -82,6 +82,22 @@ export function App() {
     return () => clearInterval(interval);
   }, [session]);
 
+  // ─── ANTI-CHEAT: Detect browser refresh (chrome button) on page load ───
+  useEffect(() => {
+    if (showAdmin || !session || session.isCompleted || session.isDisqualified) return;
+
+    const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    const isReload = navEntries.length > 0 && navEntries[0].type === 'reload';
+
+    if (isReload) {
+      // Short delay to ensure React has fully mounted before triggering the modal
+      const timeout = setTimeout(() => {
+        handleTabSwitch();
+      }, 300);
+      return () => clearTimeout(timeout);
+    }
+  }, []); // Run only once on mount
+
   // ─── ANTI-CHEAT: Tab Switch Detection ───
   const handleTabSwitch = useCallback(() => {
     if (!session || session.isCompleted || session.isDisqualified) return;
