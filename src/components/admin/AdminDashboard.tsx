@@ -4,7 +4,7 @@ import { QuestionEditor } from './QuestionEditor';
 import type { Question, TeamSession } from '../../types/game';
 import { fetchAdminSessions, subscribeAdminRealtime } from '../../utils/syncService';
 import { isSupabaseConfigured } from '../../lib/supabase';
-import { saveCustomQuestions } from '../../utils/storage';
+import { saveCustomQuestions, getAdminAuthState, setAdminAuthState } from '../../utils/storage';
 import { Lock, Shield, ArrowLeft, Database, Key, LogOut } from 'lucide-react';
 import { soundEngine } from '../../utils/soundEngine';
 
@@ -19,7 +19,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onUpdateQuestions,
   onBackToApp,
 }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => getAdminAuthState());
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
   const [activeTab, setActiveTab] = useState<'leaderboard' | 'editor'>('leaderboard');
@@ -47,12 +47,22 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     if (pinInput.trim() === expectedPin) {
       soundEngine.playSuccess();
       setIsAuthenticated(true);
+      setAdminAuthState(true);
       setPinError('');
     } else {
       soundEngine.playAlarm();
       setPinError('INVALID COMMAND PIN ACCESS DENIED.');
     }
   };
+
+  const handleExitAdmin = () => {
+    soundEngine.playClick();
+    setIsAuthenticated(false);
+    setAdminAuthState(false);
+    onBackToApp();
+  };
+
+
 
   if (!isAuthenticated) {
     return (
@@ -168,7 +178,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </button>
 
             <button
-              onClick={onBackToApp}
+              onClick={handleExitAdmin}
               className="px-3.5 py-2 border border-red-500/40 text-red-400 hover:bg-red-950/40 text-xs font-bold flex items-center gap-1"
             >
               <LogOut className="w-4 h-4" />

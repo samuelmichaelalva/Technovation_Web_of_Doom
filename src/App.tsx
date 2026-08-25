@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { DEFAULT_QUESTIONS } from './data/defaultQuestions';
 import type { Question, TeamSession, UserAnswerState } from './types/game';
-import { getLocalSession, getCustomQuestions } from './utils/storage';
+import { getLocalSession, getCustomQuestions, getAdminAuthState, setAdminAuthState } from './utils/storage';
 import { syncSessionState } from './utils/syncService';
 import { HeaderHUD } from './components/HeaderHUD';
 import { TeamLoginModal } from './components/TeamLoginModal';
@@ -36,7 +36,18 @@ export function App() {
   const [isHintModalOpen, setIsHintModalOpen] = useState(false);
   const [lastBlastTrigger, setLastBlastTrigger] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(1800); // 30 mins = 1800s
-  const [showAdmin, setShowAdmin] = useState(false);
+  const [showAdmin, setShowAdmin] = useState<boolean>(() => getAdminAuthState());
+
+  const handleOpenAdmin = () => {
+    setShowAdmin(true);
+  };
+
+  const handleCloseAdmin = () => {
+    setAdminAuthState(false);
+    setShowAdmin(false);
+  };
+
+
 
   // Anti-cheat state
   const [showTabViolationModal, setShowTabViolationModal] = useState(false);
@@ -219,13 +230,13 @@ export function App() {
       <AdminDashboard
         questions={questions}
         onUpdateQuestions={(updated: Question[]) => setQuestions(updated)}
-        onBackToApp={() => setShowAdmin(false)}
+        onBackToApp={handleCloseAdmin}
       />
     );
   }
 
   if (!session) {
-    return <TeamLoginModal onSessionStarted={handleSessionStarted} />;
+    return <TeamLoginModal onSessionStarted={handleSessionStarted} onAdminClick={handleOpenAdmin} />;
   }
 
   // ─── SECURITY LOCKOUT: Show permanent disqualification screen ───
@@ -254,7 +265,7 @@ export function App() {
         remainingSeconds={remainingSeconds}
         solvedCount={solvedCount}
         totalQuestions={questions.length}
-        onAdminClick={() => setShowAdmin(true)}
+        onAdminClick={handleOpenAdmin}
         tabSwitchCount={session.tabSwitchCount || 0}
       />
 

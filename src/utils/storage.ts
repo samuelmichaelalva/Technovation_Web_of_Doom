@@ -51,3 +51,29 @@ export function getCustomQuestions(): Question[] | null {
     return null;
   }
 }
+
+const ADMIN_AUTH_KEY = 'web_of_doom_admin_auth';
+
+export function getAdminAuthState(): boolean {
+  try {
+    return localStorage.getItem(ADMIN_AUTH_KEY) === 'true' || sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true';
+  } catch (e) {
+    return false;
+  }
+}
+
+export function setAdminAuthState(auth: boolean): void {
+  try {
+    if (auth) {
+      localStorage.setItem(ADMIN_AUTH_KEY, 'true');
+      sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+    } else {
+      localStorage.removeItem(ADMIN_AUTH_KEY);
+      sessionStorage.removeItem(ADMIN_AUTH_KEY);
+    }
+  } catch (e) {
+    console.error('Failed to set admin auth state', e);
+  }
+}
+
+

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Play, AlertTriangle } from 'lucide-react';
+import { Volume2, VolumeX, Play, AlertTriangle, Lock } from 'lucide-react';
 import { initializeTeamSession } from '../utils/syncService';
 import type { TeamSession } from '../types/game';
 import { soundEngine } from '../utils/soundEngine';
 
 interface TeamLoginModalProps {
   onSessionStarted: (session: TeamSession) => void;
+  onAdminClick?: () => void;
 }
 
-export const TeamLoginModal: React.FC<TeamLoginModalProps> = ({ onSessionStarted }) => {
+export const TeamLoginModal: React.FC<TeamLoginModalProps> = ({ onSessionStarted, onAdminClick }) => {
   const [teamId, setTeamId] = useState('');
   const [teamName, setTeamName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -59,6 +60,22 @@ export const TeamLoginModal: React.FC<TeamLoginModalProps> = ({ onSessionStarted
 
           {/* Header Section */}
           <header className="relative flex flex-col items-center text-center pb-4 border-b border-[#00eefc]/20">
+            {onAdminClick && (
+              <button
+                type="button"
+                onClick={() => {
+                  soundEngine.playClick();
+                  onAdminClick();
+                }}
+                aria-label="Admin Portal"
+                className="absolute top-0 left-0 text-slate-400 hover:text-[#00eefc] transition-colors z-20 focus:outline-none flex items-center gap-1 text-[10px] font-mono border border-slate-700 hover:border-[#00eefc] px-2 py-1 bg-[#181b25]/80 rounded-sm"
+                title="Admin Command Portal"
+              >
+                <Lock className="w-3 h-3 text-[#00eefc]" />
+                <span className="hidden sm:inline">ADMIN PORTAL</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={handleAudioToggle}
