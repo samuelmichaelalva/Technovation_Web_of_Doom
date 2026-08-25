@@ -149,13 +149,6 @@ export function App() {
       handleTabSwitch();
     };
 
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      soundEngine.playTabSiren();
-      e.preventDefault();
-      e.returnValue = '';
-      return '';
-    };
-
     const handleKeyDown = (e: KeyboardEvent) => {
       // Intercept refresh keys (F5, Ctrl+R, Cmd+R) during active mission
       if (
@@ -170,13 +163,11 @@ export function App() {
 
     document.addEventListener('visibilitychange', onVisibilityChange);
     window.addEventListener('blur', onBlur);
-    window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('keydown', handleKeyDown, true);
 
     return () => {
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('blur', onBlur);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('keydown', handleKeyDown, true);
     };
   }, [handleTabSwitch, session, showAdmin]);
