@@ -95,7 +95,7 @@ export const SecurityLockoutScreen: React.FC<SecurityLockoutScreenProps> = ({
             </div>
             <div className="p-3 bg-[#181015] border border-red-800/30">
               <div className="text-[10px] text-red-400 uppercase tracking-widest mb-1">TERMINATION REASON</div>
-              <div className="text-sm font-bold text-red-400">TAB SWITCH ×2</div>
+              <div className="text-sm font-bold text-red-400">TAB SWITCH ×5 (LIMIT REACHED)</div>
             </div>
           </div>
         </div>

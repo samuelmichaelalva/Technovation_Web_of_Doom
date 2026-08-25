@@ -152,8 +152,8 @@ export function App() {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       soundEngine.playTabSiren();
       e.preventDefault();
-      e.returnValue = 'WARNING: Refreshing or leaving the page is strictly prohibited and counts as a security violation!';
-      return e.returnValue;
+      e.returnValue = '';
+      return '';
     };
 
     document.addEventListener('visibilitychange', onVisibilityChange);
