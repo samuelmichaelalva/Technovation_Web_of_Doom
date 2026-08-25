@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Play, AlertTriangle, Lock } from 'lucide-react';
+import { Volume2, VolumeX, Play, AlertTriangle, Lock, Sparkles } from 'lucide-react';
 import { initializeTeamSession } from '../utils/syncService';
 import type { TeamSession } from '../types/game';
 import { soundEngine } from '../utils/soundEngine';
@@ -8,6 +8,11 @@ interface TeamLoginModalProps {
   onSessionStarted: (session: TeamSession) => void;
   onAdminClick?: () => void;
 }
+
+const generateRandomTeamId = () => {
+  const num = Math.floor(1000 + Math.random() * 9000);
+  return `TEAM-${num}`;
+};
 
 export const TeamLoginModal: React.FC<TeamLoginModalProps> = ({ onSessionStarted, onAdminClick }) => {
   const [teamId, setTeamId] = useState('');
@@ -24,18 +29,31 @@ export const TeamLoginModal: React.FC<TeamLoginModalProps> = ({ onSessionStarted
     }
   };
 
+  const handleGenerateId = () => {
+    soundEngine.playClick();
+    const newId = generateRandomTeamId();
+    setTeamId(newId);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!teamId.trim() || !teamName.trim()) {
-      setErrorMsg('Please enter both Team ID and Team Name.');
+
+    if (!teamName.trim()) {
+      setErrorMsg('Please enter a Team Name.');
       return;
+    }
+
+    // Auto-generate Team ID if left blank by user
+    const finalTeamId = (teamId.trim() || generateRandomTeamId()).toUpperCase();
+    if (!teamId.trim()) {
+      setTeamId(finalTeamId);
     }
 
     setIsLoading(true);
     setErrorMsg('');
     soundEngine.playClick();
 
-    const res = await initializeTeamSession(teamId.trim().toUpperCase(), teamName.trim());
+    const res = await initializeTeamSession(finalTeamId, teamName.trim());
     setIsLoading(false);
 
     if (res.success && res.session) {
@@ -132,17 +150,27 @@ export const TeamLoginModal: React.FC<TeamLoginModalProps> = ({ onSessionStarted
           {/* Authentication Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 relative z-10 font-mono">
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-[#00ff66]/80 font-bold ml-1 tracking-wider" htmlFor="team-id">
-                UNIQUE TEAM ID
-              </label>
+              <div className="flex items-center justify-between ml-1">
+                <label className="text-xs text-[#00ff66]/80 font-bold tracking-wider" htmlFor="team-id">
+                  UNIQUE TEAM ID
+                </label>
+                <button
+                  type="button"
+                  onClick={handleGenerateId}
+                  className="text-[10px] text-[#00eefc] hover:text-[#00ff66] flex items-center gap-1 font-mono uppercase tracking-wider transition-colors"
+                  title="Generate a random unique Team ID"
+                >
+                  <Sparkles className="w-3 h-3 text-[#00ff66]" />
+                  <span>AUTO-GENERATE</span>
+                </button>
+              </div>
               <input
                 id="team-id"
                 type="text"
-                required
                 value={teamId}
                 onChange={(e) => setTeamId(e.target.value)}
-                placeholder="TEAM-404"
-                className="w-full bg-[#1c1f29]/80 text-[#dfe2f0] text-sm px-4 py-3 border-0 border-b border-[#00eefc]/50 focus:ring-0 input-glow transition-all rounded-t-sm placeholder-[#b9ccb5]/50 font-mono tracking-wider uppercase"
+                placeholder="TEAM-404 (or leave blank to auto-generate)"
+                className="w-full bg-[#1c1f29]/80 text-[#dfe2f0] text-sm px-4 py-3 border-0 border-b border-[#00eefc]/50 focus:ring-0 input-glow transition-all rounded-t-sm placeholder-[#b9ccb5]/40 font-mono tracking-wider uppercase"
               />
             </div>
 
