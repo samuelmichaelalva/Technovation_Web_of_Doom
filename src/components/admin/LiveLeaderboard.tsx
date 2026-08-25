@@ -5,11 +5,12 @@ import { soundEngine } from '../../utils/soundEngine';
 
 interface LiveLeaderboardProps {
   sessions: { session: TeamSession; teamName: string }[];
-  onRefresh: () => void;
+  onRefresh: () => Promise<void> | void;
 }
 
 export const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ sessions, onRefresh }) => {
   const [selectedTeamSession, setSelectedTeamSession] = useState<TeamSession | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Sort sessions by score descending, then by start time
   const sortedSessions = [...sessions].sort((a, b) => {
@@ -18,6 +19,16 @@ export const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ sessions, onRe
     }
     return new Date(a.session.startTime).getTime() - new Date(b.session.startTime).getTime();
   });
+
+  const handleRefresh = async () => {
+    soundEngine.playClick();
+    setIsRefreshing(true);
+    try {
+      await onRefresh();
+    } finally {
+      setTimeout(() => setIsRefreshing(false), 500);
+    }
+  };
 
   const exportCSV = () => {
     soundEngine.playClick();
@@ -60,14 +71,12 @@ export const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ sessions, onRe
 
         <div className="flex items-center gap-3">
           <button
-            onClick={() => {
-              soundEngine.playClick();
-              onRefresh();
-            }}
-            className="px-3.5 py-2 bg-[#181b25] border border-[#00eefc]/40 text-[#00eefc] text-xs font-bold hover:border-[#00eefc] flex items-center gap-1.5"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="px-3.5 py-2 bg-[#181b25] border border-[#00eefc]/40 text-[#00eefc] text-xs font-bold hover:border-[#00eefc] flex items-center gap-1.5 disabled:opacity-60 transition-all"
           >
-            <RefreshCw className="w-3.5 h-3.5" />
-            <span>REFRESH</span>
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#00ff66]' : ''}`} />
+            <span>{isRefreshing ? 'REFRESHING...' : 'REFRESH'}</span>
           </button>
 
           <button

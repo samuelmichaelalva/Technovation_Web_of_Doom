@@ -137,7 +137,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    if (!session || session.isCompleted || session.isDisqualified) return;
+    if (showAdmin || !session || session.isCompleted || session.isDisqualified) return;
 
     const onVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
@@ -156,7 +156,7 @@ export function App() {
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('blur', onBlur);
     };
-  }, [handleTabSwitch, session]);
+  }, [handleTabSwitch, session, showAdmin]);
 
   const handleSessionStarted = (newSession: TeamSession) => {
     setSession(newSession);
