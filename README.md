@@ -1,8 +1,9 @@
 # Web of Doom
-### *Round 01: Doombot Wave Defense — Competitive Engineering Arena*
+### *Round 01: Doombot Wave Defense — Technovation | CSI-CSE-IT, FCRIT Vashi*
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://technovation-web-of-doom.vercel.app)
-[![Technovation](https://img.shields.io/badge/Technovation-Round%2001%20Arena-00ff66?style=for-the-badge&logoColor=black)](https://technovation-web-of-doom.vercel.app)
+[![CSI-CSE-IT FCRIT](https://img.shields.io/badge/CSI--CSE--IT-FCRIT%20Vashi-00ff66?style=for-the-badge&logoColor=black)](https://technovation-web-of-doom.vercel.app)
+[![Technovation](https://img.shields.io/badge/Technovation-Round%2001%20Arena-00eefc?style=for-the-badge&logoColor=black)](https://technovation-web-of-doom.vercel.app)
 [![React 19](https://img.shields.io/badge/React-19.2-61dafb?style=for-the-badge&logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178c6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
 [![Three.js](https://img.shields.io/badge/Three.js-r185-049ef4?style=for-the-badge&logo=threedotjs&logoColor=white)](https://threejs.org)
@@ -13,8 +14,8 @@
 
 ## ⚡ 60-Second Summary
 
-> **Web of Doom** is a real-time, cyberpunk-themed competitive programming platform custom-engineered for **Technovation** (Round 01: *Doombot Wave Defense*).
-> Competing student teams race against a synchronized 30-minute countdown to dismantle Doctor Doom's cyber grid by solving algorithmic challenges spanning 8 Data Structures & Algorithms domains (Multiple Choice, Output Prediction, and Code Debugging).
+> **Web of Doom** is a real-time, cyberpunk-themed competitive programming platform custom-engineered for **Technovation**, the flagship technical symposium organized by the **Computer Society of India (CSI) Student Chapter** across the Computer Engineering and Information Technology departments (**CSI-CSE-IT**) at **Fr. Conceicao Rodrigues Institute of Technology (FCRIT), Vashi**.
+> Serving as the high-stakes Round 01 screening arena (*Doombot Wave Defense*), student teams race against a synchronized 30-minute countdown to dismantle Doctor Doom's cyber grid by solving algorithmic challenges spanning 8 Data Structures & Algorithms domains (Multiple Choice, Output Prediction, and Code Debugging).
 > The platform features an interactive **Three.js WebGL 3D tactical boss core**, a zero-dependency **procedural Web Audio sound synthesis engine**, strict **5-strike client-side anti-cheat protection** (monitoring tab switches, window blurs, and navigation reloads), and **Supabase Realtime** synchronization with an administrative command center and live leaderboard projector.
 
 ---
@@ -34,13 +35,15 @@
 
 | Parameter | Specification |
 | :--- | :--- |
-| **Event** | Technovation (Technical Symposium) |
+| **Institution** | Fr. Conceicao Rodrigues Institute of Technology (FCRIT), Vashi |
+| **Organizing Body** | Computer Society of India (CSI) Student Chapter · Department of CE & IT (CSI-CSE-IT) |
+| **Event** | Technovation (Annual Technical Symposium) |
 | **Round / Track** | Round 01: Doombot Wave Defense |
-| **Role** | Technical Event Coordinator & Lead Developer |
+| **Role** | Technical Coordinator (CSI-CSE-IT) & Platform Developer |
 | **Architecture** | Client-First React SPA · Supabase Realtime · WebGL 3D Engine · Web Audio API |
 | **Live Deployment** | [technovation-web-of-doom.vercel.app](https://technovation-web-of-doom.vercel.app) |
 | **Target Audience** | Collegiate Engineering & Computer Science Participants |
-| **Status** | Production Event Platform (Fully Functional) |
+| **Status** | Production Event Platform (Live Competition Verified) |
 
 ---
 
@@ -63,9 +66,9 @@
 
 ## 01. Project Overview & Background
 
-During technical festivals and competitive hackathons, conventional quiz or coding rounds are frequently hosted on generic assessment forms or static evaluation websites. These off-the-shelf tools lack atmosphere, offer minimal live feedback for competing teams, and provide no visual spectacle for spectators in the venue.
+During technical festivals and departmental symposiums, conventional quiz or coding rounds are frequently hosted on generic assessment forms or static evaluation websites. These off-the-shelf tools lack atmosphere, offer minimal live feedback for competing teams, and provide no visual spectacle for spectators in the venue.
 
-**Web of Doom** was conceived, designed, and deployed specifically to solve this for **Technovation**, transforming a competitive technical screening round into an engaging, gamified arena experience.
+**Web of Doom** was conceived, engineered, and deployed specifically to solve this for **Technovation** — the annual technical symposium organized by the **CSI-CSE-IT Student Chapter** at **Fr. Conceicao Rodrigues Institute of Technology (FCRIT), Vashi** — transforming a competitive technical screening round into an engaging, gamified arena experience.
 
 ### The Lore & Event Mechanics
 * Teams take on the role of digital defense operatives tasked with dismantling **Doctor Doom's cybernetic Doombot network**.
@@ -428,11 +431,18 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.sessions;
 
 ## 12. Role & Event Contributions
 
-* **Samuel Michael Alva** — *Technical Event Coordinator & Platform Architect*  
-  Served as the Technical Coordinator for the **Technovation** symposium, in charge of hosting and orchestrating the **Web of Doom** Round 1 competition. Independently designed, built, and deployed the platform end-to-end — engineering the React 19 architecture, Three.js 3D boss core, procedural Web Audio synthesizer, 5-strike anti-cheat engine, Supabase Realtime synchronization, and admin command infrastructure for the live event.
+* **Samuel Michael Alva** — *Technical Coordinator (CSI-CSE-IT, FCRIT Vashi) & Platform Developer*  
+  As the Technical Coordinator of the **CSI-CSE-IT** (Computer Society of India Student Chapter — Department of Computer Engineering & Information Technology) professional society club at **Fr. Conceicao Rodrigues Institute of Technology (FCRIT), Vashi**, took full ownership of designing, hosting, and coordinating the flagship **Web of Doom** (Round 01: *Doombot Wave Defense*) technical competition for **Technovation**.
+
+  Independently architected and engineered the platform from the ground up to power the live contest:
+  * **Frontend & UX**: Engineered the responsive React 19 application, CRT scanline styling, tactical HUD telemetry, and question matrix navigation.
+  * **Interactive 3D Visuals**: Developed the Three.js WebGL boss core with cursor-driven spring parallax and dynamic shockwave scaling upon successful submissions.
+  * **Procedural Sound Engine**: Programmed the Web Audio API synthesizer for runtime audio generation (laser blasts, click feedback, countdown alerts, and security sirens) with zero external audio assets.
+  * **Integrity & Anti-Cheat**: Implemented the 5-strike violation protocol intercepting tab blur, keyboard shortcut overrides, and navigation reload events in lab testing conditions.
+  * **Realtime Infrastructure**: Designed the Supabase schema and WebSocket publication channels to drive the live projector leaderboard, automated tie-breaking, and instant CSV exports for organizers.
 
 ---
 
 <div align="center">
-  <sub>WEB OF DOOM // ROUND 01 // DOCTOR DOOM DEFENSE PROTOCOL // TECHNOVATION</sub>
+  <sub>WEB OF DOOM // TECHNOVATION // CSI-CSE-IT · FCRIT VASHI</sub>
 </div>
